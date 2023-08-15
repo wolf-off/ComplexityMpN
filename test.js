@@ -44,46 +44,58 @@ function splite(a, b, a_start, a_finish, b_s, b_f) {
 
 function exponential(a, b) {
     let j = 0;
+    let left;
+    let right;
+    let step;
     for (let i = 0; i < a.length; i++) {
-        step = 2;
-        while (j + step < b.length && b[j + step] < a[i]) {
+        step = 1;
+        left = j;
+        while (left + step < b.length && b[left + step] <= a[i]) {
+            left = left + step;
             step = step * 2;
         }
-        let left = j;//+ step / 2;
-        let right = Math.min(j + step, b.length - 1);
+        right = Math.min(left + step, b.length);
         // console.log("left=" + left + "  right=" + right + "  a[i]==" + a[i]);
-        while (left <= right) {
+        while (left < right) {
             middle = Math.floor((left + right) / 2);
-            if (b[middle] == a[i]) return a[i];
             if (b[middle] < a[i]) left = middle + 1;
-            else right = middle - 1;
+            else right = middle;
         }
-        j = middle;
+        if (b[left] == a[i]) return a[i];
+        j = left;
     }
     return null;
 }
 
-// console.log(exponential(
-//     [1, 4, 7, 10],
-//     [2, 3, 5, 6, 8, 9, 10]
-// ))
-// return;
-
 let n = 100000000;
-let m = 10;
+let m = 1;
 let count = 20;
 
 let b = [];
+
+// for (let i = 0; i < n; i++) {
+//     b.push(i * 2 + 2);
+// }
+// for (let i = 0; i < 8; i++) {
+//     m = m * 10;
+
+//     let a = [];
+//     for (let i = 0; i < m; i++) {
+//         a.push(i * 2 * n / m + 1);
+//     }
+
 for (let i = 0; i < n; i++) {
-    b.push(i * 2 + 2);
+    b.push(Math.floor(i / 1000) * 2000 + i % 1000);
 }
-for (let i = 1; i < 8; i++) {
+for (let i = 0; i < 8; i++) {
     m = m * 10;
 
     let a = [];
     for (let i = 0; i < m; i++) {
-        a.push(i * 2 * n / m + 1);
+        a.push(Math.floor(i * n / m / 1000) * 2000 + 1000 + i % 1000);
     }
+
+
     console.log("Run M = " + m);
 
     const start = Date.now();
